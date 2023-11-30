@@ -13,17 +13,17 @@ type Settings struct {
 }
 
 func LoadSettings() Settings {
-	sugar.Info("Loading settings...")
+	logger.Info("Loading settings...")
 	config.WithOptions(config.ParseEnv, config.ParseDefault)
 	config.AddDriver(yaml.Driver)
 	err := config.LoadFiles("config.yml", "config.yaml")
 	if err != nil {
-		sugar.Warn(err)
+		logger.Warn(err.Error())
 	}
 	settings := Settings{}
 	err = config.BindStruct("", &settings)
 	if err != nil {
-		sugar.Panic(err)
+		logger.Panic(err.Error())
 	}
 	return settings
 }

@@ -1,26 +1,24 @@
 package main
 
 import (
+	ginzap "github.com/gin-contrib/zap"
+	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"net/http"
 	"time"
 )
 
 var logger = zap.Must(zap.NewProduction())
-var sugar = logger.Sugar()
 var settings = LoadSettings()
 
 func main() {
-	s := &http.Server{
-		Addr:           settings.Listen,
-		Handler:        http.HandlerFunc(HttpGetRoot),
-		ReadTimeout:    10 * time.Second,
-		WriteTimeout:   10 * time.Second,
-		MaxHeaderBytes: 1 << 20,
-	}
-	sugar.Info("Starting server on ", s.Addr)
-	err := s.ListenAndServe()
+	gin.SetMode(gin.ReleaseMode)
+	router := gin.Default()
+	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
+	router.Use(ginzap.RecoveryWithZap(logger, true))
+	router.GET("/", HttpGetRoot)
+	logger.Sugar().Infof("Starting server on %s", settings.Listen)
+	err := router.Run(settings.Listen)
 	if err != nil {
-		sugar.Panic(err)
+		logger.Panic(err.Error())
 	}
 }
