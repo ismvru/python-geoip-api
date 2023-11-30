@@ -1,0 +1,44 @@
+---
+stages:
+  - build
+
+docker:
+  image: gcr.io/kaniko-project/executor:v1.11.0-debug
+  tags:
+    - k8s
+  stage: build
+  variables:
+    DOCKERFILE: Dockerfile
+  rules:
+    # If run from web - set docker tags to night repository and branch name
+    - if: $CI_PIPELINE_SOURCE == "web"
+      variables:
+        IMAGE_TAG: ${docker_registry_night}/${CI_PROJECT_PATH}:${CI_COMMIT_REF_NAME}
+        IMAGE_TAG_2: ${docker_registry_night}/${CI_PROJECT_PATH}:${CI_COMMIT_SHORT_SHA}
+      when: on_success
+    # If run from tag - set docker tags to prod repository, add latest tag variable
+    - if: $CI_COMMIT_TAG
+      variables:
+        IMAGE_TAG: ${docker_registry}/${CI_PROJECT_PATH}:${CI_COMMIT_TAG}
+        IMAGE_TAG_2: ${docker_registry}/${CI_PROJECT_PATH}:latest
+      when: on_success
+    - when: never
+  before_script:
+    - echo $DOCKER_AUTH_CONFIG > /kaniko/.docker/config.json
+  script:
+    - >
+      /kaniko/executor
+      --registry-mirror repo-proxy.ismv.ru
+      --context "${CI_PROJECT_DIR}"
+      --dockerfile "${CI_PROJECT_DIR}/${DOCKERFILE}"
+      --destination ${IMAGE_TAG}
+      --destination ${IMAGE_TAG_2}
+      ${KANIKO_ARGS}
+      --label "org.opencontainers.image.title=$CI_PROJECT_TITLE"
+      --label "org.opencontainers.image.url=$CI_PROJECT_URL"
+      --label "org.opencontainers.image.created=$CI_JOB_STARTED_AT"
+      --label "org.opencontainers.image.revision=$CI_COMMIT_SHA"
+      --label "org.opencontainers.image.version=$IMAGE_VERSION"
+      --label "org.opencontainers.image.ref.name=$CI_COMMIT_REF_NAME"
+      --label "org.opencontainers.image.authors=$CI_COMMIT_AUTHOR"
+      --label "org.opencontainers.image.source=$CI_PROJECT_URL"
