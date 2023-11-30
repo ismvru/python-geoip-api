@@ -16,9 +16,6 @@ func OpenGeoipDatabases() (geoip2.Reader, geoip2.Reader, geoip2.Reader) {
 	if err != nil {
 		sugar.Fatal(err)
 	}
-	defer CityDB.Close()
-	defer CountryDB.Close()
-	defer AsnDB.Close()
 	return *CityDB, *CountryDB, *AsnDB
 }
 
