@@ -1,10 +1,11 @@
 package main
 
 import (
+	"time"
+
 	ginzap "github.com/gin-contrib/zap"
 	"github.com/gin-gonic/gin"
 	"go.uber.org/zap"
-	"time"
 )
 
 var logger = zap.Must(zap.NewProduction())
@@ -13,6 +14,7 @@ var settings = LoadSettings()
 func main() {
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
+	router.HandleMethodNotAllowed = true
 	router.Use(ginzap.Ginzap(logger, time.RFC3339, true))
 	router.Use(ginzap.RecoveryWithZap(logger, true))
 	router.GET("/", HttpGetRoot)
