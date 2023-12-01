@@ -10,22 +10,26 @@ import (
 
 var logger = zap.Must(zap.NewProduction())
 var settings = LoadSettings()
+var CityDB, CountryDB, AsnDB = OpenGeoipDatabases()
 
 func main() {
 	// Watch signals and close
-	c := make(chan os.Signal, 1)
-	signal.Notify(c, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
+	sigs := make(chan os.Signal, 1)
+	signal.Notify(sigs, os.Interrupt, syscall.SIGTERM, syscall.SIGINT)
 	go func() {
-		<-c
+		<-sigs
 		CloseGeoipDatabases()
 		os.Exit(0)
 	}()
 
+	// Gin settings
 	gin.SetMode(gin.ReleaseMode)
 	router := gin.Default()
 	router.HandleMethodNotAllowed = true
 	router.Use(gin.Recovery())
 	router.GET("/", HttpGetRoot)
+
+	// Start
 	logger.Sugar().Infof("Starting server on %s", settings.Listen)
 	err := router.Run(settings.Listen)
 	if err != nil {
