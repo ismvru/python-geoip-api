@@ -10,7 +10,7 @@ import (
 
 var logger = zap.Must(zap.NewProduction())
 var settings = LoadSettings()
-var CityDB, CountryDB, AsnDB = OpenGeoipDatabases()
+var CityDB, AsnDB = OpenGeoipDatabases()
 
 func main() {
 	// Watch signals and close

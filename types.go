@@ -3,13 +3,15 @@ package main
 import "net"
 
 type IpResponse struct {
-	Ip          net.IP       `json:"ip"`
-	Country     string       `json:"country"`
-	CountryName string       `json:"country_name"`
-	City        string       `json:"city"`
-	ASN         int          `json:"asn"`
-	Org         string       `json:"org"`
-	Properties  IpProperties `json:"properties"`
+	Ip            net.IP       `json:"ip"`
+	Country       string       `json:"country"`
+	CountryName   string       `json:"country_name"`
+	Continent     string       `json:"continent"`
+	ContinentName string       `json:"continent_name"`
+	City          string       `json:"city"`
+	ASN           int          `json:"asn"`
+	Org           string       `json:"org"`
+	Properties    IpProperties `json:"properties"`
 }
 
 type IpProperties struct {
@@ -24,8 +26,7 @@ type IpProperties struct {
 }
 
 type Settings struct {
-	Listen    string `default:"${HTTP_LISTEN | :3333}"`
-	CityDB    string `default:"${GEOIP_CITY | geoip/GeoLite2-City.mmdb}"`
-	CountryDB string `default:"${GEOIP_COUNTRY | geoip/GeoLite2-Country.mmdb}"`
-	AsnDB     string `default:"${GEOIP_ASN | geoip/GeoLite2-ASN.mmdb}"`
+	Listen string `default:"${HTTP_LISTEN | :3333}"`
+	CityDB string `default:"${GEOIP_CITY | geoip/GeoLite2-City.mmdb}"`
+	AsnDB  string `default:"${GEOIP_ASN | geoip/GeoLite2-ASN.mmdb}"`
 }

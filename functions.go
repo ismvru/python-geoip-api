@@ -24,15 +24,10 @@ func GetIPInfo(ip net.IP, c chan IpResponse) (IpResponse, error) {
 		return resp, err
 	}
 	resp.City = CityRecord.City.Names["en"]
-
-	// Get info from country
-	CountryRecord, err := CountryDB.Country(ip)
-	if err != nil {
-		logger.Panic(err.Error())
-		return resp, err
-	}
-	resp.Country = CountryRecord.Country.IsoCode
-	resp.CountryName = CountryRecord.Country.Names["en"]
+	resp.Country = CityRecord.Country.IsoCode
+	resp.CountryName = CityRecord.Country.Names["en"]
+	resp.Continent = CityRecord.Continent.Code
+	resp.ContinentName = CityRecord.Continent.Names["en"]
 
 	// Get info from ASN
 	AsnRecord, err := AsnDB.ASN(ip)
