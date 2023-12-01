@@ -3,9 +3,16 @@
 - [Go GeoIP Responser](#go-geoip-responser)
   - [Configuration](#configuration)
     - [config.yml or env variables](#configyml-or-env-variables)
+  - [Endpoints](#endpoints)
+    - [Endpoint `/`](#endpoint-)
+    - [Endpoint `/:ip`](#endpoint-ip)
   - [Respone format](#respone-format)
     - [Example](#example)
+      - [Example - Correct response](#example---correct-response)
+      - [Example - Invalid IP response](#example---invalid-ip-response)
     - [Schema](#schema)
+      - [Schema - Correct response](#schema---correct-response)
+      - [Schema - Invalid IP response](#schema---invalid-ip-response)
 
 ## Configuration
 
@@ -17,9 +24,25 @@ citydb: geoip/GeoLite2-City.mmdb # env var: GEOIP_CITY, path to City database
 asndb: geoip/GeoLite2-ASN.mmdb # env var: GEOIP_ASN, path to ASN database
 ```
 
+## Endpoints
+
+### Endpoint `/`
+
+Information about client IP, see [Example - Correct response](#example---correct-response)
+
+### Endpoint `/:ip`
+
+Information about passed IP, in format `/128.128.128.128` or `2001:2001::2001` see [Example - Correct response](#example---correct-response)
+
+If passed IP is invalid - returns 400, see [Example - Invalid IP response](#example---invalid-ip-response)
+
 ## Respone format
 
 ### Example
+
+#### Example - Correct response
+
+[Schema - Correct response](#schema---correct-response)
 
 ```json
 {
@@ -42,7 +65,21 @@ asndb: geoip/GeoLite2-ASN.mmdb # env var: GEOIP_ASN, path to ASN database
 }
 ```
 
+#### Example - Invalid IP response
+
+[Schema - Invalid IP response](#schema---invalid-ip-response)
+
+```json
+{
+    "error": "invalid ip",
+    "ip": "128.128.128.256",
+    "client_ip": "128.128.128.128"
+}
+```
+
 ### Schema
+
+#### Schema - Correct response
 
 ```json
 {
@@ -125,6 +162,31 @@ asndb: geoip/GeoLite2-ASN.mmdb # env var: GEOIP_ASN, path to ASN database
     "asn",
     "org",
     "properties"
+  ]
+}
+```
+
+#### Schema - Invalid IP response
+
+```json
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "type": "object",
+  "properties": {
+    "error": {
+      "type": "string"
+    },
+    "ip": {
+      "type": "string"
+    },
+    "client_ip": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "error",
+    "ip",
+    "client_ip"
   ]
 }
 ```

@@ -2,6 +2,12 @@ package main
 
 import "net"
 
+type InvalidIpResponse struct {
+	Error    string `json:"error"`
+	Ip       string `json:"ip"`
+	ClientIP net.IP `json:"client_ip"`
+}
+
 type IpResponse struct {
 	Ip            net.IP       `json:"ip"`
 	Country       string       `json:"country"`

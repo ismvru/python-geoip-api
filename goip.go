@@ -28,6 +28,7 @@ func main() {
 	router.HandleMethodNotAllowed = true
 	router.Use(gin.Recovery())
 	router.GET("/", HttpGetRoot)
+	router.GET("/:ip", HttpGetIp)
 
 	// Start
 	logger.Sugar().Infof("Starting server on %s", settings.Listen)
