@@ -4,7 +4,7 @@ import (
 	"net"
 )
 
-func GetIPInfo(ip net.IP) (IpResponse, error) {
+func GetIPInfo(ip net.IP, c chan IpResponse) (IpResponse, error) {
 	// Init response
 	resp := IpResponse{}
 	resp.Ip = ip
@@ -35,6 +35,7 @@ func GetIPInfo(ip net.IP) (IpResponse, error) {
 	resp.ASN = int(AsnRecord.AutonomousSystemNumber)
 	resp.Org = AsnRecord.AutonomousSystemOrganization
 
+	c <- resp
 	return resp, err
 
 }

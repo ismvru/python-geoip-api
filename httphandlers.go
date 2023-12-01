@@ -9,9 +9,9 @@ import (
 
 func HttpGetRoot(c *gin.Context) {
 	UserIP := net.ParseIP(c.ClientIP())
-	ipinfo, err := GetIPInfo(UserIP)
-	if err != nil {
-		c.IndentedJSON(http.StatusMethodNotAllowed, ErrorResponse{"405 - Method not allowed!"})
-	}
+	ch := make(chan IpResponse)
+	go GetIPInfo(UserIP, ch)
+	ipinfo := <-ch
+	close(ch)
 	c.IndentedJSON(http.StatusOK, ipinfo)
 }
