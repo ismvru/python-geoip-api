@@ -19,4 +19,9 @@ func OpenGeoipDatabases() (geoip2.Reader, geoip2.Reader, geoip2.Reader) {
 	return *CityDB, *CountryDB, *AsnDB
 }
 
-var CityDB, CountryDB, AsnDB = OpenGeoipDatabases()
+func CloseGeoipDatabases() {
+	CityDB.Close()
+	CountryDB.Close()
+	AsnDB.Close()
+	logger.Info("Closed GeoIP Databases")
+}

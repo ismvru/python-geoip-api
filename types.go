@@ -2,10 +2,6 @@ package main
 
 import "net"
 
-type ErrorResponse struct {
-	Err string `json:"err"`
-}
-
 type IpResponse struct {
 	Ip          net.IP `json:"ip"`
 	Country     string `json:"country"`

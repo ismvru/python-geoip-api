@@ -3,7 +3,6 @@ module goip
 go 1.21.4
 
 require (
-	github.com/gin-contrib/zap v0.2.0
 	github.com/gin-gonic/gin v1.9.1
 	github.com/gookit/config/v2 v2.2.4
 	github.com/oschwald/geoip2-golang v1.9.0

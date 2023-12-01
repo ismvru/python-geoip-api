@@ -4,6 +4,8 @@ import (
 	"net"
 )
 
+var CityDB, CountryDB, AsnDB = OpenGeoipDatabases()
+
 func GetIPInfo(ip net.IP, c chan IpResponse) (IpResponse, error) {
 	// Init response
 	resp := IpResponse{}
