@@ -8,7 +8,7 @@ COPY *.go ./
 RUN CGO_ENABLED=0 GOOS=linux go build -o /goip
 CMD ["/goip"]
 
-FROM gcr.io/distroless/base-debian11
+FROM gcr.io/distroless/base-debian12:nonroot
 WORKDIR /
 COPY --from=builder /goip /goip
 USER nonroot:nonroot
