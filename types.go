@@ -9,15 +9,23 @@ type InvalidIpResponse struct {
 }
 
 type IpResponse struct {
-	Ip            net.IP       `json:"ip"`
-	Country       string       `json:"country"`
-	CountryName   string       `json:"country_name"`
-	Continent     string       `json:"continent"`
-	ContinentName string       `json:"continent_name"`
-	City          string       `json:"city"`
-	ASN           int          `json:"asn"`
-	Org           string       `json:"org"`
-	Properties    IpProperties `json:"properties"`
+	Ip                     net.IP       `json:"ip"`
+	Country                string       `json:"country"`
+	CountryName            string       `json:"country_name"`
+	RepresentedCountry     string       `json:"represented_country"`
+	RepresentedCountryName string       `json:"represented_country_name"`
+	RegisteredCountry      string       `json:"registered_country"`
+	RegisteredCountryName  string       `json:"registered_country_name"`
+	Continent              string       `json:"continent"`
+	ContinentName          string       `json:"continent_name"`
+	City                   string       `json:"city"`
+	ASN                    int          `json:"asn"`
+	Org                    string       `json:"org"`
+	Properties             IpProperties `json:"properties"`
+	TZ                     string       `json:"tz"`
+	Latitude               float64      `json:"latitude"`
+	Longitude              float64      `json:"longitude"`
+	AccuracyRadius         uint16       `json:"accuracy_radius"`
 }
 
 type IpProperties struct {

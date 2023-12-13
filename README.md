@@ -49,6 +49,12 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "ip": "128.128.128.128",
     "country": "US",
     "country_name": "United States",
+    "represented_country": "",
+    "represented_country_name": "",
+    "registered_country": "",
+    "registered_country_name": "",
+    "continent": "NA",
+    "continent_name": "North America",
     "city": "Buzzards Bay",
     "asn": 11499,
     "org": "WHOI-WOODSHOLE",
@@ -61,7 +67,11 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
         "link_local_multicast": false,
         "link_local_unicast": false,
         "global_unicast": true
-    }
+    },
+    "tz": "America/New_York",
+    "latitude": 41.7465,
+    "longitude": -70.5914,
+    "accuracy_radius": 20
 }
 ```
 
@@ -93,6 +103,18 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
       "type": "string"
     },
     "country_name": {
+      "type": "string"
+    },
+    "represented_country": {
+      "type": "string"
+    },
+    "represented_country_name": {
+      "type": "string"
+    },
+    "registered_country": {
+      "type": "string"
+    },
+    "registered_country_name": {
       "type": "string"
     },
     "continent": {
@@ -138,7 +160,6 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
           "type": "boolean"
         }
       },
-      "additionalProperties": true,
       "required": [
         "unspecified",
         "loopback",
@@ -149,19 +170,38 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
         "link_local_unicast",
         "global_unicast"
       ]
+    },
+    "tz": {
+      "type": "string"
+    },
+    "latitude": {
+      "type": "number"
+    },
+    "longitude": {
+      "type": "number"
+    },
+    "accuracy_radius": {
+      "type": "integer"
     }
   },
-  "additionalProperties": true,
   "required": [
     "ip",
     "country",
     "country_name",
+    "represented_country",
+    "represented_country_name",
+    "registered_country",
+    "registered_country_name",
     "continent",
     "continent_name",
     "city",
     "asn",
     "org",
-    "properties"
+    "properties",
+    "tz",
+    "latitude",
+    "longitude",
+    "accuracy_radius"
   ]
 }
 ```

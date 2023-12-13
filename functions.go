@@ -26,6 +26,14 @@ func GetIPInfo(ip net.IP, c chan IpResponse) (IpResponse, error) {
 	resp.City = CityRecord.City.Names["en"]
 	resp.Country = CityRecord.Country.IsoCode
 	resp.CountryName = CityRecord.Country.Names["en"]
+	resp.RepresentedCountry = CityRecord.RepresentedCountry.IsoCode
+	resp.RepresentedCountryName = CityRecord.RepresentedCountry.Names["en"]
+	resp.RegisteredCountry = CityRecord.RepresentedCountry.IsoCode
+	resp.RegisteredCountryName = CityRecord.RepresentedCountry.Names["en"]
+	resp.TZ = CityRecord.Location.TimeZone
+	resp.Latitude = CityRecord.Location.Latitude
+	resp.Longitude = CityRecord.Location.Longitude
+	resp.AccuracyRadius = CityRecord.Location.AccuracyRadius
 	resp.Continent = CityRecord.Continent.Code
 	resp.ContinentName = CityRecord.Continent.Names["en"]
 
