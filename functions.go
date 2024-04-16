@@ -4,49 +4,41 @@ import (
 	"net"
 )
 
-func GetIPInfo(ip net.IP, c chan IpResponse) (IpResponse, error) {
-	// Init response
-	resp := IpResponse{}
-	resp.Ip = ip
-	resp.Properties.IsUnspecified = ip.IsUnspecified()
-	resp.Properties.IsLoopback = ip.IsLoopback()
-	resp.Properties.IsPrivate = ip.IsPrivate()
-	resp.Properties.IsMulticast = ip.IsMulticast()
-	resp.Properties.IsInterfaceLocalMulticast = ip.IsInterfaceLocalMulticast()
-	resp.Properties.IsLinkLocalMulticast = ip.IsLinkLocalMulticast()
-	resp.Properties.IsLinkLocalUnicast = ip.IsLinkLocalUnicast()
-	resp.Properties.IsGlobalUnicast = ip.IsGlobalUnicast()
-
-	// Get info from city
+func GetIPInfo(ip net.IP, c chan IpResponse) {
 	CityRecord, err := CityDB.City(ip)
 	if err != nil {
 		logger.Panic(err.Error())
-		return resp, err
 	}
-	resp.City = CityRecord.City.Names["en"]
-	resp.Country = CityRecord.Country.IsoCode
-	resp.CountryName = CityRecord.Country.Names["en"]
-	resp.RepresentedCountry = CityRecord.RepresentedCountry.IsoCode
-	resp.RepresentedCountryName = CityRecord.RepresentedCountry.Names["en"]
-	resp.RegisteredCountry = CityRecord.RepresentedCountry.IsoCode
-	resp.RegisteredCountryName = CityRecord.RepresentedCountry.Names["en"]
-	resp.TZ = CityRecord.Location.TimeZone
-	resp.Latitude = CityRecord.Location.Latitude
-	resp.Longitude = CityRecord.Location.Longitude
-	resp.AccuracyRadius = CityRecord.Location.AccuracyRadius
-	resp.Continent = CityRecord.Continent.Code
-	resp.ContinentName = CityRecord.Continent.Names["en"]
-
-	// Get info from ASN
 	AsnRecord, err := AsnDB.ASN(ip)
 	if err != nil {
 		logger.Panic(err.Error())
-		return resp, err
 	}
-	resp.ASN = int(AsnRecord.AutonomousSystemNumber)
-	resp.Org = AsnRecord.AutonomousSystemOrganization
-
-	c <- resp
-	return resp, err
-
+	c <- IpResponse{
+		Ip:                     ip,
+		Country:                CityRecord.Country.IsoCode,
+		CountryName:            CityRecord.Country.Names["en"],
+		RepresentedCountry:     CityRecord.RepresentedCountry.IsoCode,
+		RepresentedCountryName: CityRecord.RepresentedCountry.Names["en"],
+		RegisteredCountry:      CityRecord.RegisteredCountry.IsoCode,
+		RegisteredCountryName:  CityRecord.RegisteredCountry.Names["en"],
+		Continent:              CityRecord.Continent.Code,
+		ContinentName:          CityRecord.Continent.Names["en"],
+		City:                   CityRecord.City.Names["en"],
+		ASN:                    int(AsnRecord.AutonomousSystemNumber),
+		Org:                    AsnRecord.AutonomousSystemOrganization,
+		Properties: IpProperties{
+			IsUnspecified:             ip.IsUnspecified(),
+			IsLoopback:                ip.IsLoopback(),
+			IsPrivate:                 ip.IsPrivate(),
+			IsMulticast:               ip.IsMulticast(),
+			IsInterfaceLocalMulticast: ip.IsInterfaceLocalMulticast(),
+			IsLinkLocalMulticast:      ip.IsLinkLocalMulticast(),
+			IsLinkLocalUnicast:        ip.IsLinkLocalUnicast(),
+			IsGlobalUnicast:           ip.IsGlobalUnicast(),
+		},
+		TZ:             CityRecord.Location.TimeZone,
+		Latitude:       CityRecord.Location.Latitude,
+		Longitude:      CityRecord.Location.Longitude,
+		AccuracyRadius: CityRecord.Location.AccuracyRadius,
+	}
 }
