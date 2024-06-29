@@ -3,7 +3,7 @@ stages:
   - build
 
 docker:
-  image: gcr.io/kaniko-project/executor:v1.11.0-debug
+  image: gcr.io/kaniko-project/executor:v1.23.1-debug
   tags:
     - k8s
   stage: build
