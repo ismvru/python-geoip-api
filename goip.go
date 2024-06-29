@@ -2,6 +2,7 @@ package main
 
 import (
 	"github.com/gin-gonic/gin"
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"go.uber.org/zap"
 	"os"
 	"os/signal"
@@ -30,9 +31,17 @@ func main() {
 	router.GET("/", HttpGetRoot)
 	router.GET("/:ip", HttpGetIp)
 
+	// Telegram settings
+	bot, err := tgbotapi.NewBotAPI(settings.TelegramToken)
+	if err != nil {
+		logger.Panic(err.Error())
+	}
+	logger.Sugar().Infof("Authorized on Telegram account %s", bot.Self.UserName)
+
 	// Start
+	go HandleTelegramUpdates(bot)
 	logger.Sugar().Infof("Starting server on %s", settings.Listen)
-	err := router.Run(settings.Listen)
+	err = router.Run(settings.Listen)
 	if err != nil {
 		logger.Panic(err.Error())
 	}

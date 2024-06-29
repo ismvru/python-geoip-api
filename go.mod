@@ -1,12 +1,14 @@
 module goip
 
-go 1.21.4
+go 1.22.3
 
 require (
 	github.com/gin-gonic/gin v1.10.0
+	github.com/go-telegram-bot-api/telegram-bot-api/v5 v5.5.1
 	github.com/gookit/config/v2 v2.2.5
 	github.com/oschwald/geoip2-golang v1.11.0
 	go.uber.org/zap v1.27.0
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
@@ -48,5 +50,4 @@ require (
 	golang.org/x/text v0.16.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
 	google.golang.org/protobuf v1.34.2 // indirect
-	gopkg.in/yaml.v3 v3.0.1 // indirect
 )

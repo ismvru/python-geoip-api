@@ -40,7 +40,9 @@ type IpProperties struct {
 }
 
 type Settings struct {
-	Listen string `default:"${HTTP_LISTEN | :3333}"`
-	CityDB string `default:"${GEOIP_CITY | geoip/GeoLite2-City.mmdb}"`
-	AsnDB  string `default:"${GEOIP_ASN | geoip/GeoLite2-ASN.mmdb}"`
+	Listen            string `default:"${HTTP_LISTEN | :3333}"`
+	CityDB            string `default:"${GEOIP_CITY | geoip/GeoLite2-City.mmdb}"`
+	AsnDB             string `default:"${GEOIP_ASN | geoip/GeoLite2-ASN.mmdb}"`
+	TelegramToken     string `default:"${TELEGRAM_TOKEN}"`
+	TelegramWhitelist string `default:"${TELEGRAM_WHITELIST}"`
 }
