@@ -4,8 +4,8 @@
   - [Configuration](#configuration)
     - [config.yml or env variables](#configyml-or-env-variables)
   - [Endpoints](#endpoints)
-    - [Endpoint `/`](#endpoint-)
-    - [Endpoint `/:ip`](#endpoint-ip)
+    - [Endpoint `/api/v1/ip`](#endpoint-apiv1ip)
+    - [Endpoint `/api/v1/ip/{ip}`](#endpoint-apiv1ipip)
   - [Respone format](#respone-format)
     - [Example](#example)
       - [Example - Correct response](#example---correct-response)
@@ -26,13 +26,13 @@ asndb: geoip/GeoLite2-ASN.mmdb # env var: GEOIP_ASN, path to ASN database
 
 ## Endpoints
 
-### Endpoint `/`
+### Endpoint `/api/v1/ip`
 
 Information about client IP, see [Example - Correct response](#example---correct-response)
 
-### Endpoint `/:ip`
+### Endpoint `/api/v1/ip/{ip}`
 
-Information about passed IP, in format `/128.128.128.128` or `2001:2001::2001` see [Example - Correct response](#example---correct-response)
+Information about passed IP, in format `128.128.128.128` or `2001:2001::2001` see [Example - Correct response](#example---correct-response)
 
 If passed IP is invalid - returns 400, see [Example - Invalid IP response](#example---invalid-ip-response)
 
