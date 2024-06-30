@@ -22,6 +22,7 @@ FROM python:3.12-slim
 WORKDIR /app
 COPY --from=builder /venv /venv
 COPY --from=builder /code/dist /app/
+COPY telegram.py /app/
 
 # hadolint ignore=SC1091,DL3013
 RUN . /venv/bin/activate && pip --no-cache-dir install -- *.whl && pip --no-cache-dir install uvicorn a2wsgi
