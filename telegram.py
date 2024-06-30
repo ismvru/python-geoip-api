@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-import sys
 import yaml
 from pyip.settings import settings
 from pyip.functions import GeoIP_Reader
