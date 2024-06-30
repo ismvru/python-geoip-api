@@ -65,6 +65,7 @@ async def command_ip_handler(message: Message) -> None:
 
 
 async def main() -> None:
+    logging.info("Init telegram bot")
     bot = Bot(
         token=settings.telegram_token,
         default=DefaultBotProperties(parse_mode=ParseMode.MARKDOWN),
@@ -73,5 +74,5 @@ async def main() -> None:
 
 
 if __name__ == "__main__":
-    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
+    logging.basicConfig(level=settings.log_level)
     asyncio.run(main())

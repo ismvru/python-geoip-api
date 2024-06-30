@@ -5,6 +5,9 @@ from pydantic import IPvAnyAddress
 from ipaddress import ip_address
 from .functions import GeoIP_Reader
 import importlib.metadata
+import logging
+
+logging.basicConfig(level=settings.log_level)
 
 app = FastAPI(version=importlib.metadata.version("pyip"), title="pyip")
 reader = GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)

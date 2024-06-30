@@ -11,6 +11,7 @@ class Settings(BaseSettings):
     geoip_asn: FilePath = "/geoip/GeoLite2-ASN.mmdb"
     telegram_token: str | None = None
     telegram_whitelist: list[str | int] | None = None
+    log_level: str = "INFO"
 
 
 settings = Settings()
