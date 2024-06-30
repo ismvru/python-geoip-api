@@ -6,3 +6,4 @@ geoip
 venv
 __pycache__
 dist
+Dockerfile

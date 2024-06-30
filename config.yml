@@ -1,3 +1,0 @@
-listen: :3333
-citydb: geoip/GeoLite2-City.mmdb
-asndb: geoip/GeoLite2-ASN.mmdb
