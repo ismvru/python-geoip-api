@@ -46,32 +46,27 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
 
 ```json
 {
-    "ip": "128.128.128.128",
-    "country": "US",
-    "country_name": "United States",
-    "represented_country": "",
-    "represented_country_name": "",
-    "registered_country": "",
-    "registered_country_name": "",
+    "accuracy_radius": 5,
+    "asn": 11499,
     "continent": "NA",
     "continent_name": "North America",
-    "city": "Buzzards Bay",
-    "asn": 11499,
+    "country": "US",
+    "country_name": "United States",
+    "ip": "128.128.128.128",
+    "latitude": 41.5694,
+    "longitude": -70.6152,
     "org": "WHOI-WOODSHOLE",
     "properties": {
-        "unspecified": false,
+        "link_local": false,
         "loopback": false,
-        "private": false,
         "multicast": false,
-        "interface_local_multicast": false,
-        "link_local_multicast": false,
-        "link_local_unicast": false,
-        "global_unicast": true
+        "private": false,
+        "reserved": false,
+        "unspecified": false
     },
-    "tz": "America/New_York",
-    "latitude": 41.7465,
-    "longitude": -70.5914,
-    "accuracy_radius": 20
+    "registered_country": "US",
+    "registered_country_name": "United States",
+    "tz": "America/New_York"
 }
 ```
 
@@ -81,9 +76,17 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
 
 ```json
 {
-    "error": "invalid ip",
-    "ip": "128.128.128.256",
-    "client_ip": "128.128.128.128"
+    "detail": [
+        {
+            "input": "128.128.128.256",
+            "loc": [
+                "path",
+                "ip"
+            ],
+            "msg": "value is not a valid IPv4 or IPv6 address",
+            "type": "ip_any_address"
+        }
+    ]
 }
 ```
 
@@ -96,7 +99,16 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "ip": {
+    "accuracy_radius": {
+      "type": "integer"
+    },
+    "asn": {
+      "type": "integer"
+    },
+    "continent": {
+      "type": "string"
+    },
+    "continent_name": {
       "type": "string"
     },
     "country": {
@@ -105,73 +117,7 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "country_name": {
       "type": "string"
     },
-    "represented_country": {
-      "type": "string"
-    },
-    "represented_country_name": {
-      "type": "string"
-    },
-    "registered_country": {
-      "type": "string"
-    },
-    "registered_country_name": {
-      "type": "string"
-    },
-    "continent": {
-      "type": "string"
-    },
-    "continent_name": {
-      "type": "string"
-    },
-    "city": {
-      "type": "string"
-    },
-    "asn": {
-      "type": "integer"
-    },
-    "org": {
-      "type": "string"
-    },
-    "properties": {
-      "type": "object",
-      "properties": {
-        "unspecified": {
-          "type": "boolean"
-        },
-        "loopback": {
-          "type": "boolean"
-        },
-        "private": {
-          "type": "boolean"
-        },
-        "multicast": {
-          "type": "boolean"
-        },
-        "interface_local_multicast": {
-          "type": "boolean"
-        },
-        "link_local_multicast": {
-          "type": "boolean"
-        },
-        "link_local_unicast": {
-          "type": "boolean"
-        },
-        "global_unicast": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "unspecified",
-        "loopback",
-        "private",
-        "multicast",
-        "interface_local_multicast",
-        "link_local_multicast",
-        "link_local_unicast",
-        "global_unicast"
-      ]
-    },
-    "tz": {
+    "ip": {
       "type": "string"
     },
     "latitude": {
@@ -180,28 +126,65 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "longitude": {
       "type": "number"
     },
-    "accuracy_radius": {
-      "type": "integer"
+    "org": {
+      "type": "string"
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "link_local": {
+          "type": "boolean"
+        },
+        "loopback": {
+          "type": "boolean"
+        },
+        "multicast": {
+          "type": "boolean"
+        },
+        "private": {
+          "type": "boolean"
+        },
+        "reserved": {
+          "type": "boolean"
+        },
+        "unspecified": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "link_local",
+        "loopback",
+        "multicast",
+        "private",
+        "reserved",
+        "unspecified"
+      ]
+    },
+    "registered_country": {
+      "type": "string"
+    },
+    "registered_country_name": {
+      "type": "string"
+    },
+    "tz": {
+      "type": "string"
     }
   },
   "required": [
-    "ip",
-    "country",
-    "country_name",
-    "represented_country",
-    "represented_country_name",
-    "registered_country",
-    "registered_country_name",
+    "accuracy_radius",
+    "asn",
     "continent",
     "continent_name",
-    "city",
-    "asn",
-    "org",
-    "properties",
-    "tz",
+    "country",
+    "country_name",
+    "ip",
     "latitude",
     "longitude",
-    "accuracy_radius"
+    "org",
+    "properties",
+    "registered_country",
+    "registered_country_name",
+    "tz"
   ]
 }
 ```
@@ -213,20 +196,45 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "error": {
-      "type": "string"
-    },
-    "ip": {
-      "type": "string"
-    },
-    "client_ip": {
-      "type": "string"
+    "detail": {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "input": {
+              "type": "string"
+            },
+            "loc": {
+              "type": "array",
+              "items": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "string"
+                }
+              ]
+            },
+            "msg": {
+              "type": "string"
+            },
+            "type": {
+              "type": "string"
+            }
+          },
+          "required": [
+            "input",
+            "loc",
+            "msg",
+            "type"
+          ]
+        }
+      ]
     }
   },
   "required": [
-    "error",
-    "ip",
-    "client_ip"
+    "detail"
   ]
 }
 ```

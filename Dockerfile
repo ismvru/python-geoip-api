@@ -1,16 +1,28 @@
 # syntax=docker/dockerfile:1
 
-FROM golang:1.22 as builder
-WORKDIR /app
-COPY go.mod go.sum ./
-RUN go mod download
-COPY *.go ./
-RUN CGO_ENABLED=0 GOOS=linux go build -o /goip
-CMD ["/goip"]
+FROM python:3.12 AS builder
 
-FROM gcr.io/distroless/base-debian12:nonroot
-WORKDIR /
-COPY --from=builder /goip /goip
-USER nonroot:nonroot
-ENV http_listen=:3333
-ENTRYPOINT ["/goip"]
+ENV PYTHONFAULTHANDLER=1 \
+    PYTHONHASHSEED=random \
+    PYTHONUNBUFFERED=1 \
+    PIP_DEFAULT_TIMEOUT=100 \
+    PIP_DISABLE_PIP_VERSION_CHECK=1 \
+    PIP_NO_CACHE_DIR=1 \
+    POETRY_VERSION=1.8.3
+
+WORKDIR /code
+COPY poetry.lock pyproject.toml /code/
+RUN pip install "poetry==$POETRY_VERSION" && python -m venv /venv
+COPY . /code/
+
+# hadolint ignore=SC1091
+RUN . /venv/bin/activate && poetry install --only main --no-root && poetry build
+
+FROM python:3.12-slim
+WORKDIR /app
+COPY --from=builder /venv /venv
+COPY --from=builder /code/dist /app/
+
+# hadolint ignore=SC1091,DL3013
+RUN . /venv/bin/activate && pip --no-cache-dir install -- *.whl && pip --no-cache-dir install uvicorn a2wsgi
+CMD ["/venv/bin/uvicorn", "pyip:app", "--host", "0.0.0.0", "--port", "8000", "--forwarded-allow-ips", "*"]
