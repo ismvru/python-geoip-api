@@ -1,17 +1,18 @@
 #!/usr/bin/env python3
 import asyncio
 import logging
-import yaml
-from pyip.settings import settings
-from pyip.functions import GeoIP_Reader
-from pyip.models import IpResponse
 
+import yaml
 from aiogram import Bot, Dispatcher
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 from aiogram.filters import CommandStart
 from aiogram.filters.command import Command
 from aiogram.types import Message
+
+from pyip.functions import GeoIP_Reader
+from pyip.models import IpResponse
+from pyip.settings import settings
 
 dp = Dispatcher()
 reader = GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)

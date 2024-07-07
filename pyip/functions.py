@@ -1,11 +1,13 @@
-from typing import Self
-import maxminddb
-from maxminddb.types import Record
 from ipaddress import IPv4Address, IPv6Address, ip_address
-from pydantic import IPvAnyAddress, FilePath
-from .models import IpResponse, IpProperties
-from aiocache import cached, Cache
+from typing import Self
+
+import maxminddb
+from aiocache import Cache, cached
 from aiocache.serializers import PickleSerializer
+from maxminddb.types import Record
+from pydantic import FilePath, IPvAnyAddress
+
+from pyip.models import IpProperties, IpResponse
 
 
 class GeoIP_Reader:
