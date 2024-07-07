@@ -19,6 +19,7 @@ COPY . /code/
 RUN . /venv/bin/activate && poetry install --only main --no-root && poetry build
 
 FROM python:3.12-slim
+ENV WEB_CONCURRENCY=4
 WORKDIR /app
 COPY --from=builder /venv /venv
 COPY --from=builder /code/dist /app/
