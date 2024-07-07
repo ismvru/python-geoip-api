@@ -26,5 +26,5 @@ COPY --from=builder /code/dist /app/
 COPY telegram.py /app/
 
 # hadolint ignore=SC1091,DL3013
-RUN . /venv/bin/activate && pip --no-cache-dir install -- *.whl && pip --no-cache-dir install uvicorn a2wsgi
+RUN . /venv/bin/activate && pip --no-cache-dir install -- *.whl
 CMD ["/venv/bin/uvicorn", "pyip:app", "--host", "0.0.0.0", "--port", "8000", "--forwarded-allow-ips", "*"]
