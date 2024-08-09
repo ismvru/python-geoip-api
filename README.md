@@ -1,8 +1,8 @@
-# Go GeoIP Responser
+# Python GeoIP Responser
 
-- [Go GeoIP Responser](#go-geoip-responser)
+- [Python GeoIP Responser](#python-geoip-responser)
   - [Configuration](#configuration)
-    - [config.yml or env variables](#configyml-or-env-variables)
+    - [env variables (.env)](#env-variables-env)
   - [Endpoints](#endpoints)
     - [Endpoint `/api/v1/ip`](#endpoint-apiv1ip)
     - [Endpoint `/api/v1/ip/{ip}`](#endpoint-apiv1ipip)
@@ -13,15 +13,23 @@
     - [Schema](#schema)
       - [Schema - Correct response](#schema---correct-response)
       - [Schema - Invalid IP response](#schema---invalid-ip-response)
+  - [Telegram bot configuration](#telegram-bot-configuration)
+    - [Additional env variables (.env)](#additional-env-variables-env)
+    - [Telegram conmmands and responses example](#telegram-conmmands-and-responses-example)
 
 ## Configuration
 
-### config.yml or env variables
+### env variables (.env)
 
-```yaml
-listen: :3333  # env var: HTTP_LISTEN, IP and port to listen
-citydb: geoip/GeoLite2-City.mmdb # env var: GEOIP_CITY, path to City database
-asndb: geoip/GeoLite2-ASN.mmdb # env var: GEOIP_ASN, path to ASN database
+```bash
+# Bind to specific IP, or :: - IPv4 + IPv6, 0.0.0.0 - IPv4
+HTTP_HOST=::
+# Bind to port
+HTTP_PORT=8000
+# Path to GeoIP City database
+GEOIP_CITY=geoip/GeoLite2-City.mmdb
+# Path to GeoIP ASN database
+GEOIP_ASN=geoip/GeoLite2-ASN.mmdb
 ```
 
 ## Endpoints
@@ -34,7 +42,7 @@ Information about client IP, see [Example - Correct response](#example---correct
 
 Information about passed IP, in format `128.128.128.128` or `2001:2001::2001` see [Example - Correct response](#example---correct-response)
 
-If passed IP is invalid - returns 400, see [Example - Invalid IP response](#example---invalid-ip-response)
+If passed IP is invalid - returns 422, see [Example - Invalid IP response](#example---invalid-ip-response)
 
 ## Respone format
 
@@ -46,28 +54,29 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
 
 ```json
 {
-    "accuracy_radius": 5,
-    "asn": 11499,
-    "continent": "NA",
-    "continent_name": "North America",
-    "country": "US",
-    "country_name": "United States",
-    "ip": "128.128.128.128",
-    "latitude": 41.5694,
-    "longitude": -70.6152,
-    "org": "WHOI-WOODSHOLE",
-    "properties": {
-        "link_local": false,
-        "loopback": false,
-        "multicast": false,
-        "private": false,
-        "reserved": false,
-        "unspecified": false
-    },
-    "registered_country": "US",
-    "registered_country_name": "United States",
-    "tz": "America/New_York"
+  "ip": "128.128.128.128",
+  "country": "US",
+  "country_name": "United States",
+  "registered_country": "US",
+  "registered_country_name": "United States",
+  "continent": "NA",
+  "continent_name": "North America",
+  "asn": 11499,
+  "org": "WHOI-WOODSHOLE",
+  "properties": {
+    "unspecified": false,
+    "loopback": false,
+    "private": false,
+    "multicast": false,
+    "link_local": false,
+    "reserved": false
+  },
+  "tz": "America/New_York",
+  "latitude": 41.5226,
+  "longitude": -70.6662,
+  "accuracy_radius": 5
 }
+
 ```
 
 #### Example - Invalid IP response
@@ -76,17 +85,17 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
 
 ```json
 {
-    "detail": [
-        {
-            "input": "128.128.128.256",
-            "loc": [
-                "path",
-                "ip"
-            ],
-            "msg": "value is not a valid IPv4 or IPv6 address",
-            "type": "ip_any_address"
-        }
-    ]
+  "detail": [
+    {
+      "type": "ip_any_address",
+      "loc": [
+        "path",
+        "ip"
+      ],
+      "msg": "value is not a valid IPv4 or IPv6 address",
+      "input": "128.128.128.256"
+    }
+  ]
 }
 ```
 
@@ -99,16 +108,7 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
   "$schema": "http://json-schema.org/draft-04/schema#",
   "type": "object",
   "properties": {
-    "accuracy_radius": {
-      "type": "integer"
-    },
-    "asn": {
-      "type": "integer"
-    },
-    "continent": {
-      "type": "string"
-    },
-    "continent_name": {
+    "ip": {
       "type": "string"
     },
     "country": {
@@ -117,7 +117,56 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "country_name": {
       "type": "string"
     },
-    "ip": {
+    "registered_country": {
+      "type": "string"
+    },
+    "registered_country_name": {
+      "type": "string"
+    },
+    "continent": {
+      "type": "string"
+    },
+    "continent_name": {
+      "type": "string"
+    },
+    "asn": {
+      "type": "integer"
+    },
+    "org": {
+      "type": "string"
+    },
+    "properties": {
+      "type": "object",
+      "properties": {
+        "unspecified": {
+          "type": "boolean"
+        },
+        "loopback": {
+          "type": "boolean"
+        },
+        "private": {
+          "type": "boolean"
+        },
+        "multicast": {
+          "type": "boolean"
+        },
+        "link_local": {
+          "type": "boolean"
+        },
+        "reserved": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "unspecified",
+        "loopback",
+        "private",
+        "multicast",
+        "link_local",
+        "reserved"
+      ]
+    },
+    "tz": {
       "type": "string"
     },
     "latitude": {
@@ -126,65 +175,25 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "longitude": {
       "type": "number"
     },
-    "org": {
-      "type": "string"
-    },
-    "properties": {
-      "type": "object",
-      "properties": {
-        "link_local": {
-          "type": "boolean"
-        },
-        "loopback": {
-          "type": "boolean"
-        },
-        "multicast": {
-          "type": "boolean"
-        },
-        "private": {
-          "type": "boolean"
-        },
-        "reserved": {
-          "type": "boolean"
-        },
-        "unspecified": {
-          "type": "boolean"
-        }
-      },
-      "required": [
-        "link_local",
-        "loopback",
-        "multicast",
-        "private",
-        "reserved",
-        "unspecified"
-      ]
-    },
-    "registered_country": {
-      "type": "string"
-    },
-    "registered_country_name": {
-      "type": "string"
-    },
-    "tz": {
-      "type": "string"
+    "accuracy_radius": {
+      "type": "integer"
     }
   },
   "required": [
-    "accuracy_radius",
-    "asn",
-    "continent",
-    "continent_name",
+    "ip",
     "country",
     "country_name",
-    "ip",
-    "latitude",
-    "longitude",
-    "org",
-    "properties",
     "registered_country",
     "registered_country_name",
-    "tz"
+    "continent",
+    "continent_name",
+    "asn",
+    "org",
+    "properties",
+    "tz",
+    "latitude",
+    "longitude",
+    "accuracy_radius"
   ]
 }
 ```
@@ -202,7 +211,7 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
         {
           "type": "object",
           "properties": {
-            "input": {
+            "type": {
               "type": "string"
             },
             "loc": {
@@ -219,15 +228,15 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
             "msg": {
               "type": "string"
             },
-            "type": {
+            "input": {
               "type": "string"
             }
           },
           "required": [
-            "input",
+            "type",
             "loc",
             "msg",
-            "type"
+            "input"
           ]
         }
       ]
@@ -237,4 +246,45 @@ If passed IP is invalid - returns 400, see [Example - Invalid IP response](#exam
     "detail"
   ]
 }
+```
+
+## Telegram bot configuration
+
+### Additional env variables (.env)
+
+```bash
+# Telegram token from @BotFather
+TELEGRAM_TOKEN=HereIsYourTelegramToken
+# Whitelist
+TELEGRAM_WHITELIST='["username1", "id1"]'
+```
+
+### Telegram conmmands and responses example
+
+Command: /ip 128.128.128.128
+
+Response:
+
+```yaml
+accuracy_radius: 5
+asn: 11499
+continent: NA
+continent_name: North America
+country: US
+country_name: United States
+ip: !!python/object/apply:ipaddress.IPv4Address
+- 2155905152
+latitude: 41.5694
+longitude: -70.6152
+org: WHOI-WOODSHOLE
+properties:
+  link_local: false
+  loopback: false
+  multicast: false
+  private: false
+  reserved: false
+  unspecified: false
+registered_country: US
+registered_country_name: United States
+tz: America/New_York
 ```
