@@ -1,4 +1,6 @@
 # syntax=docker/dockerfile:1
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 
 FROM python:3.12 AS builder
 

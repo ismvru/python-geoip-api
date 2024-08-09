@@ -2,8 +2,8 @@
 name = "pyip"
 version = "0.2.3"
 description = ""
-authors = ["Your Name <you@example.com>"]
-license = "WTFPL"
+authors = ["Mikhail Isaev <admin@ismv.ru>"]
+license = "AGPL-3"
 readme = "README.md"
 
 [tool.poetry.dependencies]

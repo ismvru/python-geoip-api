@@ -1,3 +1,5 @@
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 import asyncio
 
 import uvicorn

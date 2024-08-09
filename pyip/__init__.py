@@ -1,3 +1,5 @@
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 import importlib.metadata
 import logging
 from ipaddress import ip_address

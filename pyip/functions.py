@@ -1,3 +1,5 @@
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 from ipaddress import IPv4Address, IPv6Address, ip_address
 from typing import Self
 

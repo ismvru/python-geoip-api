@@ -1,3 +1,5 @@
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 from fastapi.testclient import TestClient
 
 from pyip import app

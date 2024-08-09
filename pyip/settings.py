@@ -1,3 +1,5 @@
+# Copyright (C) 2024 Mikhail Isaev <admin@ismv.ru>
+
 from ipaddress import ip_address
 
 from pydantic import FilePath, IPvAnyAddress
