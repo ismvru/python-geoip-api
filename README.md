@@ -1,5 +1,8 @@
 # Python GeoIP Responser
 
+**Warning for GitHub Users**
+This repository is a mirror of my private gitlab. You can open Issues here, but it is absolutely useless to make PR's.
+
 - [Python GeoIP Responser](#python-geoip-responser)
   - [Configuration](#configuration)
     - [env variables (.env)](#env-variables-env)
