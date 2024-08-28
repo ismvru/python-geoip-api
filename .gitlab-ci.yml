@@ -4,9 +4,7 @@ stages:
   - build
 
 lint:
-  image:
-    name: ghcr.io/astral-sh/ruff:latest
-    entrypoint: [""]
+  image: python:3-slim
   rules:
     - if: $CI_PIPELINE_SOURCE == "web"
       allow_failure: true
@@ -18,9 +16,11 @@ lint:
   tags:
     - k8s
   stage: lint
+  before_script:
+    - pip install ruff
   script:
-    - /ruff format --check --diff
-    - /ruff check --diff
+    - ruff format --check --diff
+    - ruff check --diff
 
 docker:
   image: gcr.io/kaniko-project/executor:v1.23.1-debug
