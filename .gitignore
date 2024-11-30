@@ -1,6 +1,9 @@
 .env
 *.sh
 *.conf
+*.html
+*.prof
+*.pprof
 geoip
 .venv
 venv

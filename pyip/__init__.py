@@ -7,6 +7,8 @@ from ipaddress import ip_address
 from fastapi import FastAPI, Request
 from fastapi.exceptions import HTTPException
 from fastapi.responses import RedirectResponse
+
+# from fastapi_profiler import PyInstrumentProfilerMiddleware
 from pydantic import IPvAnyAddress
 
 from pyip.functions import GeoIP_Reader
@@ -16,6 +18,16 @@ from pyip.settings import settings
 logging.basicConfig(level=settings.log_level)
 
 app = FastAPI(version=importlib.metadata.version("pyip"), title="pyip")
+
+# app.add_middleware(
+#     PyInstrumentProfilerMiddleware,
+#     server_app=app,
+#     profiler_output_type="html",
+#     is_print_each_request=False,
+#     open_in_browser=False,
+#     html_file_name="pprof.html",
+# )
+
 reader = GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
 
 

@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "pyip"
-version = "0.2.3"
+version = "0.2.4"
 description = ""
 authors = ["Mikhail Isaev <admin@ismv.ru>"]
 license = "AGPL-3"
@@ -21,6 +21,7 @@ uvicorn = {extras = ["standard"], version = "^0.30.1"}
 pytest = "^8.2.2"
 httpx = "^0.27.0"
 pytest-cov = "^5.0.0"
+fastapi-profiler = "^1.4.1"
 
 [build-system]
 requires = ["poetry-core"]
