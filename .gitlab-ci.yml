@@ -57,6 +57,8 @@ test:
 
 sonarqube-check:
   stage: sonar
+  needs:
+    - test
   image:
     name: sonarsource/sonar-scanner-cli:11
     entrypoint: [""]
