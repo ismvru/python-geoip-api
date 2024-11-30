@@ -48,7 +48,7 @@ class GeoIPReader:
     def __enter__(self) -> Self:
         return self
 
-    def __exit__(self, type, value, traceback) -> None:
+    def __exit__(self, type, value, traceback) -> bool:
         try:
             self.city_db.close()
             self.asn_db.close()
