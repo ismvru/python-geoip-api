@@ -49,10 +49,10 @@ async def get_ip_provided_redir(ip: IPvAnyAddress) -> RedirectResponse:
 @app.get("/api/v1/ip", response_model=IpResponse)
 async def get_ip(request: Request) -> IpResponse:
     if request.client.host == "testclient":
-        ip: IPvAnyAddress = ip_address("127.0.0.1")
+        ip: IPvAnyAddress = IPvAnyAddress(ip_address("127.0.0.1"))
     else:
-        ip: IPvAnyAddress = ip_address(request.client.host)
-    ip_response: IpResponse = await reader.get_ip_info(ip)
+        ip: IPvAnyAddress = IPvAnyAddress(request.client.host)
+    ip_response: IpResponse = await reader.get_ip_info(ip_address(ip))
     return ip_response
 
 
