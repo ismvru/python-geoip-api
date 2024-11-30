@@ -12,12 +12,12 @@ from aiogram.filters import CommandStart
 from aiogram.filters.command import Command
 from aiogram.types import Message
 
-from pyip.functions import GeoIP_Reader
+from pyip.functions import GeoIPReader
 from pyip.models import IpResponse
 from pyip.settings import settings
 
 dp = Dispatcher()
-reader = GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
+reader = GeoIPReader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
 
 
 @dp.message(CommandStart())

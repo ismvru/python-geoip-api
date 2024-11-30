@@ -11,7 +11,7 @@ from fastapi.responses import RedirectResponse
 # from fastapi_profiler import PyInstrumentProfilerMiddleware
 from pydantic import IPvAnyAddress
 
-from pyip.functions import GeoIP_Reader
+from pyip.functions import GeoIPReader
 from pyip.models import IpResponse
 from pyip.settings import settings
 
@@ -28,7 +28,7 @@ app = FastAPI(version=importlib.metadata.version("pyip"), title="pyip")
 #     html_file_name="pprof.html",
 # )
 
-reader = GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
+reader = GeoIPReader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
 
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -58,6 +58,6 @@ async def get_ip(request: Request) -> IpResponse:
 
 @app.get("/api/v1/ip/{ip}", response_model=IpResponse)
 async def get_ip_provided(ip: IPvAnyAddress) -> IpResponse:
-    with GeoIP_Reader(city_db=settings.geoip_city, asn_db=settings.geoip_asn) as reader:
+    with GeoIPReader(city_db=settings.geoip_city, asn_db=settings.geoip_asn) as reader:
         ip_response: IpResponse = await reader.get_ip_info(ip)
     return ip_response

@@ -12,7 +12,7 @@ from pydantic import FilePath, IPvAnyAddress
 from pyip.models import IpProperties, IpResponse
 
 
-class GeoIP_Reader:
+class GeoIPReader:
     """GeoIP (mmdb2) database reader"""
 
     def __init__(self, city_db: FilePath, asn_db: FilePath) -> None:
