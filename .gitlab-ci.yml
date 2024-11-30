@@ -38,13 +38,24 @@ test:
     PIP_DISABLE_PIP_VERSION_CHECK: "1"
     PIP_NO_CACHE_DIR: "1"
     POETRY_VERSION: "1.8.4"
+    GEOIP_CITY: "./geoip/GeoLite2-City.mmdb"
+    GEOIP_ASN: "./geoip/GeoLite2-ASN.mmdb"
   tags:
     - k8s
   stage: test
   before_script:
     - python -m venv .venv
-    - .venv/bin/pip install "poetry==$POETRY_VERSION"
+    - .venv/bin/pip install poetry
     - .venv/bin/poetry install
+    - >
+      export FOUND_FILES=$(test -d geoip && find geoip -iname "*.mmdb" -type f -mtime +7 || echo Nope)
+      if [ -n "${FOUND_FILES}" ]; then
+        mkdir -p geoip
+        wget --progress=dot:giga -O geoip/GeoLite2-City.mmdb https://git.io/GeoLite2-City.mmdb
+        wget --progress=dot:giga -O geoip/GeoLite2-ASN.mmdb https://git.io/GeoLite2-ASN.mmdb
+      else
+        echo mmdb files are present and not older than a week
+      fi
   script:
     - .venv/bin/coverage run -m pytest
     - .venv/bin/coverage xml
@@ -55,6 +66,9 @@ test:
     expire_in: "1 day"
     paths:
       - coverage.xml
+  cache:
+    paths:
+      - ./geoip
 
 sonarqube-check:
   stage: sonar
