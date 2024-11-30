@@ -21,6 +21,7 @@ reader = GeoIPReader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
 
 GTFO_MESSAGE: str = "Not authorized"
 
+
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
     """
