@@ -45,8 +45,8 @@ test:
     - pip install "poetry==$POETRY_VERSION"
     - poetry install
   script:
-    - coverage run -m pytest
-    - coverage xml
+    - .venv/bin/coverage run -m pytest
+    - .venv/bin/coverage xml
   artifacts:
     untracked: false
     when: on_success
