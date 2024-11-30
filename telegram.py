@@ -19,6 +19,7 @@ from pyip.settings import settings
 dp = Dispatcher()
 reader = GeoIPReader(city_db=settings.geoip_city, asn_db=settings.geoip_asn)
 
+GTFO_MESSAGE: str = "Not authorized"
 
 @dp.message(CommandStart())
 async def command_start_handler(message: Message) -> None:
@@ -30,7 +31,7 @@ async def command_start_handler(message: Message) -> None:
         message.from_user.username not in settings.telegram_whitelist
         and message.from_user.id not in settings.telegram_whitelist
     ):
-        await message.answer("Not authorized")
+        await message.answer(GTFO_MESSAGE)
         return
     await message.answer("Hello!")
 
@@ -42,7 +43,7 @@ async def command_id_handler(message: Message) -> None:
         message.from_user.username not in settings.telegram_whitelist
         and message.from_user.id not in settings.telegram_whitelist
     ):
-        await message.answer("Not authorized")
+        await message.answer(GTFO_MESSAGE)
         return
     await message.answer(
         f"Name: {message.from_user.username}, ID: {message.from_user.id}"
@@ -56,7 +57,7 @@ async def command_ip_handler(message: Message) -> None:
         message.from_user.username not in settings.telegram_whitelist
         and message.from_user.id not in settings.telegram_whitelist
     ):
-        await message.answer("Not authorized")
+        await message.answer(GTFO_MESSAGE)
         return
     splitted_text: list[str] = message.text.split(" ")
     if len(splitted_text) != 2:
