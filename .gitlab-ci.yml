@@ -1,6 +1,8 @@
 ---
 stages:
   - lint
+  - test
+  - sonar
   - build
 
 lint:
@@ -20,8 +22,41 @@ lint:
     - ruff format --check --diff
     - ruff check --diff
 
+test:
+  image: python:3
+  rules:
+    - if: $CI_COMMIT_TAG
+      allow_failure: false
+      when: on_success
+    - when: always
+      allow_failure: true
+  variables:
+    PYTHONFAULTHANDLER: "1"
+    PYTHONHASHSEED: random
+    PYTHONUNBUFFERED: "1"
+    PIP_DEFAULT_TIMEOUT: "100"
+    PIP_DISABLE_PIP_VERSION_CHECK: "1"
+    PIP_NO_CACHE_DIR: "1"
+    POETRY_VERSION: "1.8.4"
+  tags:
+    - k8s
+  stage: test
+  before_script:
+    - pip install "poetry==$POETRY_VERSION"
+    - poetry install
+  script:
+    - coverage run -m pytest
+    - coverage xml
+  artifacts:
+    untracked: false
+    when: on_success
+    access: all
+    expire_in: "1 day"
+    paths:
+      - coverage.xml
+
 sonarqube-check:
-  stage: lint
+  stage: sonar
   image:
     name: sonarsource/sonar-scanner-cli:11
     entrypoint: [""]
