@@ -90,6 +90,7 @@ sonarqube-check:
     paths:
       - ./geoip
       - coverage.xml
+    policy: pull
 
 docker:
   image: gcr.io/kaniko-project/executor:v1.23.1-debug
