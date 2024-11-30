@@ -47,7 +47,7 @@ test:
     - python -m venv .venv
     - .venv/bin/pip install poetry
     - .venv/bin/poetry install
-    - >
+    - |
       export FOUND_FILES=$(test -d geoip && find geoip -iname "*.mmdb" -type f -mtime +7 || echo Nope)
       if [ -n "${FOUND_FILES}" ]; then
         mkdir -p geoip
