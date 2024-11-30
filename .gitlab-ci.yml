@@ -42,8 +42,9 @@ test:
     - k8s
   stage: test
   before_script:
-    - pip install "poetry==$POETRY_VERSION"
-    - poetry install
+    - python -m venv .venv
+    - .venv/bin/pip install "poetry==$POETRY_VERSION"
+    - .venv/bin/poetry install
   script:
     - .venv/bin/coverage run -m pytest
     - .venv/bin/coverage xml
