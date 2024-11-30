@@ -50,7 +50,7 @@ async def get_ip_provided_redir(ip: IPvAnyAddress) -> RedirectResponse:
 async def get_ip(request: Request) -> IpResponse:
     if request.client.host == "testclient":
         ip: IPvAnyAddress = IPvAnyAddress(ip_address("127.0.0.1"))
-    else:
+    else: # pragma: no cover
         ip: IPvAnyAddress = IPvAnyAddress(request.client.host)
     ip_response: IpResponse = await reader.get_ip_info(ip_address(ip))
     return ip_response
