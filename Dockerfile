@@ -21,12 +21,12 @@ COPY . /code/
 RUN . /venv/bin/activate && poetry install --only main --no-root && poetry build
 
 FROM python:3.12-slim
-USER nobody
 ENV WEB_CONCURRENCY=4
 WORKDIR /app
-COPY --from=builder --chown=nobody:nogroup /venv /venv
-COPY --from=builder --chown=nobody:nogroup /code/dist /app/
-COPY --chown=nobody:nogroup telegram.py /app/
+COPY --from=builder /venv /venv
+COPY --from=builder /code/dist /app/
+COPY telegram.py /app/
+USER nobody
 
 # hadolint ignore=SC1091,DL3013
 RUN . /venv/bin/activate && pip --no-cache-dir install -- *.whl
