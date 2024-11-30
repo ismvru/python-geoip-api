@@ -59,16 +59,11 @@ test:
   script:
     - .venv/bin/coverage run -m pytest
     - .venv/bin/coverage xml
-  artifacts:
-    untracked: false
-    when: on_success
-    access: all
-    expire_in: "1 day"
-    paths:
-      - coverage.xml
   cache:
+    key: the-one-cache
     paths:
       - ./geoip
+      - coverage.xml
 
 sonarqube-check:
   stage: sonar
@@ -90,6 +85,11 @@ sonarqube-check:
       when: on_success
     - when: always
       allow_failure: true
+  cache:
+    key: the-one-cache
+    paths:
+      - ./geoip
+      - coverage.xml
 
 docker:
   image: gcr.io/kaniko-project/executor:v1.23.1-debug
